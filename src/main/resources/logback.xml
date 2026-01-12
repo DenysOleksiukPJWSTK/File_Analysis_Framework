@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Logback Configuration Strategy (2025 Standard)
+    Author: Denys Oleksiuk
+
+    Architecture:
+    1. Dynamic Session Tracking: Each run creates a unique file set based on timestamp.
+    2. Multi-Appender Routing: Separate destinations for standard flow, crashes, and debugging.
+    3. Failure Isolation: ERROR level logs are duplicated to a dedicated crash log.
+-->
+<configuration>
+    <!-- 1. SESSION TIMESTAMP
+     Creates a unique identifier for the current execution window.
+     Format: YearMonthDay_HourMinuteSecond
+-->
+    <timestamp key="sessionNum" datePattern="yyyyMMdd_HHmmss"/>
+
+    <!-- 2. SESSION FILE APPENDER
+     Captures the standard business flow (INFO and higher).
+     Destination: logs/sessions/
+     Policy: Fresh file per session (append=false).
+-->
+    <appender name="SESSION_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/sessions/session_${sessionNum}.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 3. CRASH FILE APPENDER
+         Isolated destination for ERROR level events only.
+         Used for immediate root-cause analysis of system failures.
+    -->
+    <appender name="CRASH_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/crash/crash_${sessionNum}.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 4. DEBUG FILE APPENDER
+         Full verbosity log including TRACE and DEBUG levels.
+         Includes [%thread] for tracking concurrency issues.
+    -->
+    <appender name="DEBUG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/debug/debug_${sessionNum}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 5. ROOT LOGGER
+         Level ALL ensures no data loss; specific filtering is handled by appenders.
+    -->
+    <root level="ALL">
+        <appender-ref ref="SESSION_FILE" />
+        <appender-ref ref="CRASH_FILE" />
+        <appender-ref ref="DEBUG_FILE" />
+    </root>
+</configuration>

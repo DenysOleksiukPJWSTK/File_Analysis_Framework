@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.config.report;
 
 /**
  * Specifies the output file formats available for generated reports.

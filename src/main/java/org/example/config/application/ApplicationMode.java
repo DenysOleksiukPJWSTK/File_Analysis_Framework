@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.config.application;
 /**
  * Defines the operational environment of the application.
  *

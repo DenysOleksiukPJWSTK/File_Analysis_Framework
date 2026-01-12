@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.config.analysis;
 /**
  * Defines the sorting direction for analysis result sets.
  *

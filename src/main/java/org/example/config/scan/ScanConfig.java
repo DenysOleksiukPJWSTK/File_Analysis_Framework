@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.config.scan;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,7 +57,7 @@ public final class ScanConfig {
 
         if (maxDepth < -1) throw new IllegalArgumentException("Max depth must be >= 0 or equal to -1 (no depth limit)");
         if (maxFileSizeBytes < 0) throw new IllegalArgumentException("Max file size cannot be lower than 0!");
-        if (maxFileSizeBytes > 10737418240L) throw  new IllegalArgumentException("Max file size cannot be greater than 10GB!");
+        if (maxFileSizeBytes > 10737418240L) throw new IllegalArgumentException("Max file size cannot be greater than 10GB!");
 
     }
     /**

@@ -1,6 +1,7 @@
-package org.example.config;
+package org.example.config.analysis;
 
 import org.example.analysis.FileFilterStrategy;
+import org.example.config.report.ReportFormat;
 
 import java.nio.charset.Charset;
 /**
