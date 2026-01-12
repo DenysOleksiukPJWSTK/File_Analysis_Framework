@@ -4,11 +4,9 @@ public class ConfigLoader {
     private static final ConfigLoader instance = new ConfigLoader();
     private final String configFile;
 
-    private ConfigLoader(){
+    //   try(InputStream is = classLoader.getResourceAsStream(configFile))
+    //        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    //   Properties properties = new Properties();
+    //            properties.load(is);
 
-    }
-
-    public static ConfigLoader getInstance(){
-        return instance;
-    }
 }
